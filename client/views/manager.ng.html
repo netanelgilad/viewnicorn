@@ -1,0 +1,14 @@
+<div class="well edit" ng-repeat="(id, unicornSite) in unicornSites">
+    <button type="button" class="close" ng-click="removeUnicornSite(id)">&times;</button>
+    <input class="large" type="text" ng-model="unicornSite.name" ng-blur="updateUnicornSite(id)"/>
+    <p class="medium">{{unicornSite.status}} Unicorns</p>
+    <input class="balSlider" k-ng-model="unicornSite.status" kendo-slider k-min="0" k-max="100" k-on-change="updateUnicornSite(id)"/>
+</div>
+
+<hr/>
+
+<div class="well edit create">
+    <input class="large" type="text" ng-model="newUnicornSite.name" placeholder="Enter a name"/>
+    <input class="medium" type="text" ng-model="newUnicornSite.status" placeholder="How many unicorns?"/>
+    <button ng-click="addUnicornSite()" class="btn btn-lg btn-success btn-block">Create</button>
+</div>
