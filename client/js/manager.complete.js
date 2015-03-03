@@ -5,7 +5,7 @@ var app = angular.module('unicornSiteManager', [
     'angular-meteor'
 ]);
 
-app.config(function ($routeProvider) {
+app.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
         when('/', {
             templateUrl: 'client/views/dashboard.ng.html',
@@ -17,17 +17,17 @@ app.config(function ($routeProvider) {
         }).
         when('/login', {templateUrl: 'client/views/login.ng.html', controller: 'LoginCtrl'}).
         otherwise({redirectTo: '/#/'});
-});
+}]);
 
 //-------------------------------------------------------------------------------------------------
 // DEMO: Realtime
 //-------------------------------------------------------------------------------------------------
 
-app.controller('DashboardCtrl', function ($scope, UnicornSiteService) {
+app.controller('DashboardCtrl', ['$scope', 'UnicornSiteService', function ($scope, UnicornSiteService) {
     $scope.unicornSites = UnicornSiteService.getUnicornSites();
-});
+}]);
 
-app.controller('ManagerCtrl', function ($scope, UnicornSiteService) {
+app.controller('ManagerCtrl', ['$scope', 'UnicornSiteService', function ($scope, UnicornSiteService) {
     $scope.currentUnicornSite = null;
     $scope.newUnicornSite = { name: '', status: '' };
     $scope.unicornSites = UnicornSiteService.getUnicornSites();
@@ -54,9 +54,9 @@ app.controller('ManagerCtrl', function ($scope, UnicornSiteService) {
         $scope.currentUnicornSite = null;
         $scope.newUnicornSite = { name: '', status: '' };
     };
-});
+}]);
 
-app.factory('UnicornSiteService', function ($meteor) {
+app.factory('UnicornSiteService', ['$meteor', function ($meteor) {
     var unicornSites = $meteor.collection(Unicorns).subscribe('unicorns');
 
     var getUnicornSites = function () {
@@ -81,13 +81,13 @@ app.factory('UnicornSiteService', function ($meteor) {
         updateUnicornSite: updateUnicornSite,
         removeUnicornSite: removeUnicornSite
     }
-});
+}]);
 
 //-------------------------------------------------------------------------------------------------
 // DEMO: Authentication
 //-------------------------------------------------------------------------------------------------
 
-app.controller('MainCtrl', function ($scope, $location, AuthService) {
+app.controller('MainCtrl', ['$scope', '$location', 'AuthService', function ($scope, $location, AuthService) {
     $scope.logout = function () {
         AuthService.logout();
     };
@@ -103,9 +103,9 @@ app.controller('MainCtrl', function ($scope, $location, AuthService) {
     });
 
     $scope.currentUser = AuthService.getCurrentUser();
-});
+}]);
 
-app.controller('LoginCtrl', function ($scope, $location, AuthService) {
+app.controller('LoginCtrl', ['$scope', '$location', 'AuthService', function ($scope, $location, AuthService) {
     $scope.user = { email: '', password: '' };
 
     $scope.login = function (email, password) {
@@ -119,9 +119,9 @@ app.controller('LoginCtrl', function ($scope, $location, AuthService) {
     $scope.reset = function () {
         $scope.user = { email: '', password: '' };
     };
-});
+}]);
 
-app.factory('AuthService', function ($rootScope) {
+app.factory('AuthService', ['$rootScope', function ($rootScope) {
     var getCurrentUser = function () {
         return $rootScope.currentUser;
     };
@@ -161,7 +161,7 @@ app.factory('AuthService', function ($rootScope) {
         logout: logout,
         register: register
     }
-});
+}]);
 
 kendo.bind(document.body);
 
